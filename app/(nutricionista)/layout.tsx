@@ -1,3 +1,4 @@
+import { HeaderNutricionista } from '@/components/nutricionista/Header'
 import { SidebarNutricionista } from '@/components/nutricionista/Sidebar'
 
 export default function LayoutNutricionista({
@@ -8,7 +9,10 @@ export default function LayoutNutricionista({
   return (
     <div className="flex min-h-screen bg-background">
       <SidebarNutricionista />
-      <main className="flex-1 flex flex-col">{children}</main>
+      <main className="flex-1 flex flex-col">
+        <HeaderNutricionista titulo="Bom dia, Jadson!" />
+        {children}
+      </main>
     </div>
   )
 }
