@@ -24,9 +24,12 @@ export function SidebarNutricionista() {
   return (
     <aside className="w-[220px] shrink-0 flex flex-col min-h-screen border-r border-border bg-card">
       {/* Logo */}
-      <div className="px-6 py-6 border-b border-border">
+      <Link
+        href="/dashboard"
+        className="px-6 py-6 border-b border-border block hover:opacity-80 transition-opacity"
+      >
         <span className="text-xl font-bold text-primary">NutriTrack</span>
-      </div>
+      </Link>
 
       {/* Perfil */}
       <div className="px-6 py-5 border-b border-border flex items-center gap-3">
