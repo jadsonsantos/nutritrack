@@ -32,12 +32,17 @@ export function HeaderNutricionista({ titulo }: Props) {
           <input
             type="text"
             placeholder="Buscar paciente..."
+            aria-label="Buscar paciente"
             className="pl-9 pr-4 py-2 text-sm bg-background border border-border rounded-full w-56 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
           />
         </div>
 
         {/* Botão novo paciente */}
-        <button className="flex items-center gap-2 bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-full hover:opacity-90 transition-opacity">
+        <button
+          type="button"
+          aria-label="Novo paciente"
+          className="flex items-center gap-2 bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
+        >
           <UserPlus size={16} />
           Novo paciente
         </button>
