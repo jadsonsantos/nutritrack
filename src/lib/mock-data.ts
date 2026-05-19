@@ -84,3 +84,39 @@ export const METRICAS = [
     destaque: true,
   },
 ]
+
+export const PACIENTE_MOCK = {
+  nome: 'Mariana Souza',
+  iniciais: 'MS',
+  desde: 'Jan 2024',
+  pesoAtual: 68,
+  pesoMeta: 64,
+  progressoPct: 75,
+}
+
+export const REFEICOES_MOCK = [
+  {
+    id: '1',
+    horario: '08:15',
+    nome: 'Café da Manhã',
+    kcal: 320,
+    itens: 'Iogurte natural, 100g de mirtilos, 2 colheres de granola',
+    status: 'dentro' as const,
+  },
+  {
+    id: '2',
+    horario: '12:45',
+    nome: 'Almoço',
+    kcal: 540,
+    itens: 'Salmão grelhado, aspargos e 3 colheres de quinoa',
+    status: 'ajuste' as const,
+  },
+  {
+    id: '3',
+    horario: '16:00',
+    nome: 'Lanche da Tarde',
+    kcal: null,
+    itens: null,
+    status: 'aguardando' as const,
+  },
+]
