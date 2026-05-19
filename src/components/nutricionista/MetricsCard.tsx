@@ -2,7 +2,7 @@ import { METRICAS } from '@/lib/mock-data'
 
 export default function MetricsCard() {
   return (
-    <div className="grid grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {METRICAS.map((metrica) => (
         <div
           key={metrica.label}
