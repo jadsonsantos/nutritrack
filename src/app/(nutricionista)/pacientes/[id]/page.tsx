@@ -11,6 +11,14 @@ const ABAS = ['Diário alimentar', 'Evolução', 'Plano ativo']
 export default function PerfilPacientePage() {
   const [abaAtiva, setAbaAtiva] = useState('Diário alimentar')
 
+  const getDate = () => {
+    return new Date().toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      weekday: 'long',
+    })
+  }
+
   return (
     <div className="p-8 space-y-6">
       {/* Voltar */}
@@ -45,7 +53,7 @@ export default function PerfilPacientePage() {
       {abaAtiva === 'Diário alimentar' && (
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Hoje, 18 de maio
+            {getDate()}
           </p>
           <MealCard />
         </div>
