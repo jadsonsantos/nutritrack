@@ -1,5 +1,22 @@
+'use client'
+
 import { HeaderNutricionista } from '@/components/nutricionista/Header'
-import { SidebarNutricionista } from '@/components/nutricionista/Sidebar'
+import { Sidebar } from '@/components/shared/Sidebar'
+import {
+  BarChart2,
+  ClipboardList,
+  LayoutDashboard,
+  Settings,
+  Users,
+} from 'lucide-react'
+
+const NAV_ITEMS = [
+  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/pacientes', label: 'Pacientes', icon: Users },
+  { href: '/planos', label: 'Planos', icon: ClipboardList },
+  { href: '/relatorios', label: 'Relatórios', icon: BarChart2 },
+  { href: '/configuracoes', label: 'Configurações', icon: Settings },
+]
 
 export default function LayoutNutricionista({
   children,
@@ -8,7 +25,7 @@ export default function LayoutNutricionista({
 }) {
   return (
     <div className="flex min-h-screen bg-background">
-      <SidebarNutricionista />
+      <Sidebar items={NAV_ITEMS} name="Jadson Santos" role="Nutricionista" />
       <main className="flex-1 flex flex-col">
         <HeaderNutricionista titulo="Bom dia, Jadson!" />
         {children}
