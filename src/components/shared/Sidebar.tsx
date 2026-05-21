@@ -1,31 +1,28 @@
 'use client'
 
-import {
-  BarChart2,
-  ClipboardList,
-  LayoutDashboard,
-  Settings,
-  Users,
-} from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-const NAV_ITEMS = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/pacientes', label: 'Pacientes', icon: Users },
-  { href: '/planos', label: 'Planos', icon: ClipboardList },
-  { href: '/relatorios', label: 'Relatórios', icon: BarChart2 },
-  { href: '/configuracoes', label: 'Configurações', icon: Settings },
-]
+type NavItem = {
+  href: string
+  label: string
+  icon: React.ComponentType<{ size?: number }>
+}
 
-export function SidebarNutricionista() {
+type SidebarProps = {
+  items: NavItem[]
+  name: string
+  role: string
+}
+
+export function Sidebar({ items, name, role }: SidebarProps) {
   const pathname = usePathname()
 
   return (
     <aside className="w-[220px] shrink-0 flex flex-col min-h-screen border-r border-border bg-card">
       {/* Logo */}
       <Link
-        href="/dashboard"
+        href="/hoje"
         className="px-6 py-6 border-b border-border block hover:opacity-80 transition-opacity"
       >
         <span className="text-xl font-bold text-primary">NutriTrack</span>
@@ -34,17 +31,17 @@ export function SidebarNutricionista() {
       {/* Perfil */}
       <div className="px-6 py-5 border-b border-border flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold shrink-0">
-          JS
+          {name.slice(0, 2).toUpperCase()}
         </div>
         <div>
-          <p className="text-sm font-semibold text-foreground">Jadson Santos</p>
-          <p className="text-xs text-muted-foreground">Nutricionista Clínico</p>
+          <p className="text-sm font-semibold text-foreground">{name}</p>
+          <p className="text-xs text-muted-foreground">{role}</p>
         </div>
       </div>
 
       {/* Navegação */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+        {items.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link
