@@ -89,13 +89,20 @@ export default function CreateMealPlanPage() {
         <input
           value={planName}
           onChange={(e) => setPlanName(e.target.value)}
+          aria-label="Nome do plano"
           className="text-xl font-bold text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors py-1"
         />
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 text-sm border border-border rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+          <button
+            className="px-4 py-2 text-sm border border-border rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            type="button"
+          >
             Rascunho
           </button>
-          <button className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-medium">
+          <button
+            className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-medium"
+            type="button"
+          >
             Salvar plano
           </button>
         </div>
@@ -156,6 +163,8 @@ export default function CreateMealPlanPage() {
                 <button
                   onClick={() => handleAddFood(meal.id)}
                   className="w-10 h-10 bg-primary text-primary-foreground rounded-lg flex items-center justify-center hover:opacity-90 transition-opacity text-xl font-light"
+                  type="button"
+                  aria-label="Adicionar alimento"
                 >
                   +
                 </button>
@@ -178,6 +187,8 @@ export default function CreateMealPlanPage() {
                   <button
                     onClick={() => handleRemoveFood(meal.id, food.id)}
                     className="w-6 h-6 rounded-full border-2 border-destructive text-destructive flex items-center justify-center text-sm hover:bg-destructive hover:text-primary-foreground transition-colors"
+                    type="button"
+                    aria-label="Remover alimento"
                   >
                     −
                   </button>
@@ -192,6 +203,7 @@ export default function CreateMealPlanPage() {
       <button
         onClick={handleAddMeal}
         className="w-full py-3 border border-dashed border-border rounded-xl text-sm text-muted-foreground hover:text-foreground hover:border-primary hover:bg-muted/30 transition-colors"
+        type="button"
       >
         + Adicionar nova refeição
       </button>
