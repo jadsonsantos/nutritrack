@@ -38,7 +38,8 @@ export default function PerfilPacientePage() {
           <button
             key={aba}
             onClick={() => setAbaAtiva(aba)}
-            className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
+            type="button"
+            className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px cursor-pointer ${
               abaAtiva === aba
                 ? 'border-primary text-primary'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
