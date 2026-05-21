@@ -20,7 +20,7 @@ export default function PatientsTable() {
         <h2 className="font-semibold text-foreground">Pacientes Recentes</h2>
         <button
           type="button"
-          className="text-sm text-primary font-medium hover:underline"
+          className="text-sm text-primary font-medium cursor-pointer hover:underline"
         >
           Ver todos →
         </button>

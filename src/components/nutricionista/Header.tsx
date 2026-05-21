@@ -41,7 +41,7 @@ export function HeaderNutricionista({ titulo }: Props) {
         <button
           type="button"
           aria-label="Novo paciente"
-          className="flex items-center gap-2 bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
+          className="flex items-center gap-2 bg-primary text-primary-foreground text-sm font-medium px-4 py-2 rounded-full cursor-pointer hover:opacity-90 transition-opacity"
         >
           <UserPlus size={16} />
           Novo paciente
