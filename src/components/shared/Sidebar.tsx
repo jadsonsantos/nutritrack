@@ -13,16 +13,17 @@ type SidebarProps = {
   items: NavItem[]
   name: string
   role: string
+  homeHref: string
 }
 
-export function Sidebar({ items, name, role }: SidebarProps) {
+export function Sidebar({ items, name, role, homeHref }: SidebarProps) {
   const pathname = usePathname()
 
   return (
     <aside className="w-[220px] shrink-0 flex flex-col min-h-screen border-r border-border bg-card">
       {/* Logo */}
       <Link
-        href="/hoje"
+        href={homeHref}
         className="px-6 py-6 border-b border-border block hover:opacity-80 transition-opacity"
       >
         <span className="text-xl font-bold text-primary">NutriTrack</span>
@@ -31,7 +32,13 @@ export function Sidebar({ items, name, role }: SidebarProps) {
       {/* Perfil */}
       <div className="px-6 py-5 border-b border-border flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-bold shrink-0">
-          {name.slice(0, 2).toUpperCase()}
+          {name
+            .split(' ')
+            .filter(Boolean)
+            .map((n) => n[0])
+            .slice(0, 2)
+            .join('')
+            .toUpperCase()}
         </div>
         <div>
           <p className="text-sm font-semibold text-foreground">{name}</p>

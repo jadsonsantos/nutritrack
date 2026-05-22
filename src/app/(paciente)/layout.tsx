@@ -16,7 +16,12 @@ export default function PatientLayout({
 }) {
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar items={NAV_ITEMS} name="João Silva" role="Paciente" />
+      <Sidebar
+        items={NAV_ITEMS}
+        name="João Silva"
+        role="Paciente"
+        homeHref="/hoje"
+      />
       <main className="flex-1 flex flex-col">{children}</main>
     </div>
   )

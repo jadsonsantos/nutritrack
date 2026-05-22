@@ -25,7 +25,12 @@ export default function LayoutNutricionista({
 }) {
   return (
     <div className="flex min-h-screen bg-background">
-      <Sidebar items={NAV_ITEMS} name="Jadson Santos" role="Nutricionista" />
+      <Sidebar
+        items={NAV_ITEMS}
+        name="Jadson Santos"
+        role="Nutricionista"
+        homeHref="/dashboard"
+      />
       <main className="flex-1 flex flex-col">
         <HeaderNutricionista titulo="Bom dia, Jadson!" />
         {children}
