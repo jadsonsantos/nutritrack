@@ -1,16 +1,9 @@
+import { getDate } from '@/utils'
 import { Bell, HelpCircle, Search, UserPlus } from 'lucide-react'
 
 type Props = {
   titulo: string
 }
-
-const getDate = () =>
-  new Date().toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-    weekday: 'long',
-  })
 
 export function HeaderNutricionista({ titulo }: Props) {
   return (
