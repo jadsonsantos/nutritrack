@@ -18,7 +18,7 @@ export function MacroProgress({ macro }: { macro: Macro }) {
         <div
           className={`h-full rounded-full ${macro.color}`}
           style={{
-            width: `${Math.min((macro.consumed / macro.goal) * 100, 100)}%`,
+            width: `${macro.goal > 0 ? Math.min((macro.consumed / macro.goal) * 100, 100) : 0}%`,
           }}
         />
       </div>

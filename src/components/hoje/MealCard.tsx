@@ -26,8 +26,9 @@ export function MealCard({
       </div>
 
       <button
+        disabled={meal.status !== 'pending'}
         onClick={() => meal.status === 'pending' && onRegister(meal.id)}
-        className={`text-sm font-medium px-4 py-2 rounded-lg transition-opacity ${config.badgeClass} ${meal.status === 'pending' ? 'hover:opacity-90 cursor-pointer' : 'cursor-default'}`}
+        className={`text-sm font-medium px-4 py-2 rounded-lg transition-opacity ${config.badgeClass} ${meal.status === 'pending' ? 'hover:opacity-90 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
       >
         {config.label}
       </button>

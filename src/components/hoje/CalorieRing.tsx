@@ -5,7 +5,7 @@ export function CalorieRing({
   consumed: number
   goal: number
 }) {
-  const pct = Math.min((consumed / goal) * 100, 100)
+  const pct = goal > 0 ? Math.min((consumed / goal) * 100, 100) : 0
   const circumference = 2 * Math.PI * 54
   const offset = circumference - (pct / 100) * circumference
   const remaining = goal - consumed
