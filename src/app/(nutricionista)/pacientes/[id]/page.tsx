@@ -2,6 +2,7 @@
 
 import MealCard from '@/components/nutricionista/MealCard'
 import PatientHeader from '@/components/nutricionista/PatientHeader'
+import { getDate } from '@/utils'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -10,14 +11,6 @@ const ABAS = ['Diário alimentar', 'Evolução', 'Plano ativo']
 
 export default function PerfilPacientePage() {
   const [abaAtiva, setAbaAtiva] = useState('Diário alimentar')
-
-  const getDate = () => {
-    return new Date().toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      weekday: 'long',
-    })
-  }
 
   return (
     <div className="p-8 space-y-6">
