@@ -15,7 +15,7 @@ export default function Header({ onPeriodChange, activePeriod }: HeaderProps) {
           <button
             key={period}
             onClick={() => onPeriodChange(period)}
-            className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            className={`px-4 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
               activePeriod === period
                 ? 'bg-primary text-primary-foreground'
                 : 'text-muted-foreground hover:text-foreground'

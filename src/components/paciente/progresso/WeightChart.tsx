@@ -1,9 +1,9 @@
-import { Line, ResponsiveContainer } from 'recharts'
-
 import { Period } from '@/types'
 import {
   CartesianGrid,
+  Line,
   LineChart as RechartsLineChart,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -38,8 +38,8 @@ const WEIGHT_DATA: Record<
 
 export function WeightChart({ activePeriod }: { activePeriod: Period }) {
   const weightData = WEIGHT_DATA[activePeriod]
-  const currentWeight = weightData[weightData.length - 1].weight
-  const firstWeight = weightData[0].weight
+  const currentWeight = weightData[weightData.length - 1]?.weight ?? 0
+  const firstWeight = weightData[0]?.weight ?? 0
   const weightDiff = (currentWeight - firstWeight).toFixed(1)
   const isLoss = currentWeight < firstWeight
   return (
@@ -101,7 +101,10 @@ export function WeightChart({ activePeriod }: { activePeriod: Period }) {
               borderRadius: '8px',
               fontSize: '13px',
             }}
-            formatter={(value) => [`${value as number} kg`, 'Peso']}
+            formatter={(value, name) => [
+              `${value as number} kg`,
+              name === 'weight' ? 'Peso real' : 'Meta',
+            ]}
           />
           <Line
             type="monotone"

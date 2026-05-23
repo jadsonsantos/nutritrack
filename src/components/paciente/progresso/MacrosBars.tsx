@@ -22,7 +22,7 @@ export default function MacrosBar() {
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{
-                width: `${Math.min((macro.consumed / macro.goal) * 100, 100)}%`,
+                width: `${macro.goal > 0 ? Math.min((macro.consumed / macro.goal) * 100, 100) : 0}%`,
                 backgroundColor: macro.color,
               }}
             />
