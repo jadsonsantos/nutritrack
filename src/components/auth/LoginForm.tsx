@@ -1,7 +1,12 @@
+import { Button } from '@base-ui/react'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 
-export const LoginForm = () => {
+type LoginFormProps = {
+  role: 'nutritionist' | 'patient'
+}
+
+export const LoginForm = ({ role }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -9,7 +14,7 @@ export const LoginForm = () => {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     // TODO: conectar com NextAuth
-    console.log({ email, password })
+    console.log({ email, role })
   }
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -30,12 +35,12 @@ export const LoginForm = () => {
       <div className="space-y-1.5">
         <div className="flex justify-between items-center">
           <label className="text-sm font-medium text-foreground">Senha</label>
-          <button
+          <Button
             type="button"
             className="text-sm text-primary cursor-pointer hover:underline"
           >
             Esqueceu a senha?
-          </button>
+          </Button>
         </div>
         <div className="relative">
           <input
@@ -46,23 +51,23 @@ export const LoginForm = () => {
             required
             className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors bg-background pr-12"
           />
-          <button
+          <Button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer hover:text-foreground transition-colors"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Botão entrar */}
-      <button
+      <Button
         type="submit"
         className="w-full bg-primary text-primary-foreground font-medium py-3 rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
       >
         Entrar
-      </button>
+      </Button>
 
       {/* Divisor */}
       <div className="flex items-center gap-4">
@@ -72,7 +77,7 @@ export const LoginForm = () => {
       </div>
 
       {/* Google */}
-      <button
+      <Button
         type="button"
         className="w-full border border-border rounded-xl py-3 text-sm font-medium text-foreground cursor-pointer hover:bg-muted transition-colors flex items-center justify-center gap-3"
       >
@@ -95,7 +100,7 @@ export const LoginForm = () => {
           />
         </svg>
         Continuar com Google
-      </button>
+      </Button>
     </form>
   )
 }

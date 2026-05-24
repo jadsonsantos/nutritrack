@@ -1,3 +1,5 @@
+import { Button } from '@base-ui/react'
+
 type RoleToggleProps = {
   handleSetRole: (role: 'nutritionist' | 'patient') => void
   role: 'nutritionist' | 'patient'
@@ -6,7 +8,7 @@ type RoleToggleProps = {
 const RoleToggle = ({ handleSetRole, role }: RoleToggleProps) => {
   return (
     <div className="flex bg-muted rounded-lg p-1">
-      <button
+      <Button
         onClick={() => handleSetRole('nutritionist')}
         className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer ${
           role === 'nutritionist'
@@ -15,8 +17,8 @@ const RoleToggle = ({ handleSetRole, role }: RoleToggleProps) => {
         }`}
       >
         Nutricionista
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={() => handleSetRole('patient')}
         className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer ${
           role === 'patient'
@@ -25,7 +27,7 @@ const RoleToggle = ({ handleSetRole, role }: RoleToggleProps) => {
         }`}
       >
         Paciente
-      </button>
+      </Button>
     </div>
   )
 }

@@ -3,6 +3,7 @@
 import { LoginForm } from '@/components/auth/LoginForm'
 import LoginHero from '@/components/auth/LoginHero'
 import RoleToggle from '@/components/auth/RoleToggle'
+import Link from 'next/link'
 import { useState } from 'react'
 
 type Role = 'nutritionist' | 'patient'
@@ -32,15 +33,18 @@ export default function LoginPage() {
           <RoleToggle role={role} handleSetRole={setRole} />
 
           {/* Formulário */}
-          <LoginForm />
+          <LoginForm role={role} />
 
           {/* Rodapé */}
           <div className="text-center space-y-3">
             <p className="text-sm text-muted-foreground">
               Não tem conta?{' '}
-              <button className="text-primary font-medium cursor-pointer hover:underline">
+              <Link
+                href="/register"
+                className="text-primary font-medium cursor-pointer hover:underline"
+              >
                 Cadastre-se grátis
-              </button>
+              </Link>
             </p>
             <p className="text-xs text-muted-foreground italic">
               O cadastro de pacientes é realizado exclusivamente pelo seu
