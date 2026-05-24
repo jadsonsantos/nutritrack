@@ -1,3 +1,5 @@
+import { PERIODS } from '@/constants'
+
 export type MealStatus = 'done' | 'pending' | 'upcoming'
 
 export interface Meal {
@@ -16,3 +18,5 @@ export type Macro = {
   unit: string
   color: string
 }
+
+export type Period = (typeof PERIODS)[number]

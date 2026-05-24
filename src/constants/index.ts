@@ -89,4 +89,6 @@ const MACROS = [
   },
 ]
 
-export { CONSUMED, DAILY_GOAL, INITIAL_MEALS, MACROS, STATUS_CONFIG }
+const PERIODS = ['7 dias', '30 dias', '3 meses'] as const
+
+export { CONSUMED, DAILY_GOAL, INITIAL_MEALS, MACROS, PERIODS, STATUS_CONFIG }
