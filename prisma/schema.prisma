@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  NUTRITIONIST
+  PATIENT
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String?
+  role      Role     @default(PATIENT)
+  createdAt DateTime @default(now())
+
+  nutritionist NutritionistProfile?
+  patient      PatientProfile?
+
+  accounts Account[]
+  sessions Session[]
+}
+
+model NutritionistProfile {
+  id        String  @id @default(cuid())
+  userId    String  @unique
+  crn       String?
+  specialty String?
+
+  user      User             @relation(fields: [userId], references: [id])
+  patients  PatientProfile[]
+  mealPlans MealPlan[]
+}
+
+model PatientProfile {
+  id             String  @id @default(cuid())
+  userId         String  @unique
+  nutritionistId String?
+  currentWeight  Float?
+  goalWeight     Float?
+
+  user         User                 @relation(fields: [userId], references: [id])
+  nutritionist NutritionistProfile? @relation(fields: [nutritionistId], references: [id])
+  weightLogs   WeightLog[]
+  mealPlans    MealPlan[]
+  foodLogs     FoodLog[]
+}
+
+model WeightLog {
+  id        String   @id @default(cuid())
+  patientId String
+  weight    Float
+  loggedAt  DateTime @default(now())
+
+  patient PatientProfile @relation(fields: [patientId], references: [id])
+}
+
+model MealPlan {
+  id             String   @id @default(cuid())
+  patientId      String
+  nutritionistId String
+  name           String
+  targetCalories Int
+  targetProtein  Int
+  targetCarbs    Int
+  targetFat      Int
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+
+  patient      PatientProfile      @relation(fields: [patientId], references: [id])
+  nutritionist NutritionistProfile @relation(fields: [nutritionistId], references: [id])
+  meals        Meal[]
+}
+
+model Meal {
+  id         String  @id @default(cuid())
+  mealPlanId String
+  name       String
+  mealTime   String?
+  order      Int
+
+  mealPlan MealPlan  @relation(fields: [mealPlanId], references: [id])
+  foodLogs FoodLog[]
+}
+
+model FoodLog {
+  id         String   @id @default(cuid())
+  patientId  String
+  tacoFoodId Int
+  mealId     String?
+  logDate    DateTime @default(now())
+  quantityG  Float
+
+  patient  PatientProfile @relation(fields: [patientId], references: [id])
+  meal     Meal?          @relation(fields: [mealId], references: [id])
+  tacoFood TacoFood       @relation(fields: [tacoFoodId], references: [id])
+}
+
+model TacoFood {
+  id              Int     @id
+  name            String
+  caloriesPer100g Float
+  proteinPer100g  Float
+  carbsPer100g    Float
+  fatPer100g      Float
+  fiberPer100g    Float?
+
+  foodLogs FoodLog[]
+}
+
+// Tabelas obrigatórias do NextAuth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
