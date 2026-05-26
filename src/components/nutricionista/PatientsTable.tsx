@@ -1,4 +1,4 @@
-import { PACIENTES } from '@/lib/mock-data'
+import { auth } from '@/lib/auth'
 
 const STATUS_ESTILO = {
   'em-dia': 'bg-primary/10 text-primary',
@@ -12,7 +12,26 @@ const STATUS_LABEL = {
   'sem-plano': 'Sem plano',
 }
 
-export default function PatientsTable() {
+export default async function PatientsTable() {
+  const session = await auth()
+
+  const nutritionist = await prisma?.nutritionistProfile.findUnique({
+    where: { userId: session?.user.id },
+    include: {
+      patients: {
+        include: {
+          user: true,
+          weightLogs: {
+            orderBy: { loggedAt: 'desc' },
+            take: 1,
+          },
+        },
+      },
+    },
+  })
+
+  const patients = nutritionist?.patients ?? []
+
   return (
     <div className="bg-card border border-border rounded-xl overflow-x-auto">
       {/* Header da tabela */}
@@ -30,89 +49,114 @@ export default function PatientsTable() {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-muted/40">
-            <th className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Paciente
-            </th>
-            <th className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Email
-            </th>
-            <th className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Peso atual
-            </th>
-            <th className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Meta
-            </th>
-            <th className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Último registro
-            </th>
-            <th className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Status
-            </th>
+            {[
+              'Paciente',
+              'Email',
+              'Peso atual',
+              'Meta',
+              'Último registro',
+              'Status',
+            ].map((header) => (
+              <th
+                key={header}
+                className="text-left px-6 py-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+              >
+                {header}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
-          {PACIENTES.map((patient) => (
-            <tr
-              key={patient.id}
-              className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
-            >
-              {/* Avatar + nome */}
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0">
-                    {patient.iniciais}
-                  </div>
-                  <span className="font-medium text-foreground">
-                    {patient.nome}
-                  </span>
-                </div>
-              </td>
-
-              {/* Email */}
-              <td className="px-6 py-4 text-muted-foreground">
-                {patient.email}
-              </td>
-
-              {/* Peso atual + variação */}
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-1.5">
-                  <span>{patient.pesoAtual}kg</span>
-                  {patient.variacao > 0 && (
-                    <span className="text-xs text-destructive">
-                      ▲ {patient.variacao}
-                    </span>
-                  )}
-                  {patient.variacao < 0 && (
-                    <span className="text-xs text-primary">
-                      ▼ {Math.abs(patient.variacao)}
-                    </span>
-                  )}
-                  {patient.variacao === 0 && (
-                    <span className="text-xs text-muted-foreground">—</span>
-                  )}
-                </div>
-              </td>
-
-              {/* Meta */}
-              <td className="px-6 py-4 text-muted-foreground">
-                {patient.pesoMeta}kg
-              </td>
-
-              {/* Último registro */}
-              <td className="px-6 py-4 text-muted-foreground">
-                {patient.ultimoRegistro}
-              </td>
-
-              {/* Status */}
-              <td className="px-6 py-4">
-                <span
-                  className={`text-xs font-semibold px-3 py-1 rounded-full ${STATUS_ESTILO[patient.status]}`}
-                >
-                  {STATUS_LABEL[patient.status]}
-                </span>
+          {patients.length === 0 && (
+            <tr>
+              <td
+                colSpan={6}
+                className="text-center py-6 text-muted-foreground italic"
+              >
+                Nenhum paciente encontrado.
               </td>
             </tr>
-          ))}
+          )}
+          {patients.map((patient) => {
+            console.log(patient)
+            const logs = patient.weightLogs
+            const currentWeight = logs[0]?.weight ?? patient.currentWeight
+            const previousWeight = logs[1]?.weight ?? null
+            const variation =
+              currentWeight && previousWeight
+                ? currentWeight - previousWeight
+                : null
+            const initials =
+              patient.user.name
+                ?.split(' ')
+                .map((n) => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2) ?? '??'
+
+            return (
+              <tr
+                key={patient.id}
+                className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors cursor-pointer"
+              >
+                {/* Avatar + nome */}
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0">
+                      {initials}
+                    </div>
+                    <span className="font-medium text-foreground">
+                      {patient.user.name}
+                    </span>
+                  </div>
+                </td>
+
+                {/* Email */}
+                <td className="px-6 py-4 text-muted-foreground">
+                  {patient.user.email}
+                </td>
+
+                {/* Peso atual + variação */}
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-1.5">
+                    <span>{currentWeight ?? '-'}kg</span>
+                    {variation && variation > 0 && (
+                      <span className="text-xs text-destructive">
+                        ▲ {variation}
+                      </span>
+                    )}
+                    {variation && variation < 0 && (
+                      <span className="text-xs text-primary">
+                        ▼ {Math.abs(variation) ?? '-'}
+                      </span>
+                    )}
+                    {variation === 0 && (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </div>
+                </td>
+
+                {/* Meta */}
+                <td className="px-6 py-4 text-muted-foreground">
+                  {patient.goalWeight ?? '-'}kg
+                </td>
+
+                {/* Último registro */}
+                <td className="px-6 py-4 text-muted-foreground">
+                  {/* {patient.ultimoRegistro} */}
+                </td>
+
+                {/* Status */}
+                <td className="px-6 py-4">
+                  <span
+                    className={`text-xs font-semibold px-3 py-1 rounded-full ${STATUS_ESTILO['em-dia']}`}
+                  >
+                    {STATUS_LABEL['em-dia']}
+                  </span>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
