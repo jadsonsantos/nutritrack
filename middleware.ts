@@ -1,4 +1,5 @@
 import { auth } from '@/lib/auth'
+import { ROLES } from '@/lib/roles'
 import { NextResponse } from 'next/server'
 
 export default auth((req) => {
@@ -13,7 +14,7 @@ export default auth((req) => {
   if (publicRoutes.includes(pathname)) {
     // Se já está logado, redireciona pro lugar certo
     if (isLoggedIn) {
-      if (role === 'NUTRITIONIST') {
+      if (role === ROLES.NUTRITIONIST) {
         return NextResponse.redirect(new URL('/dashboard', req.url))
       }
       return NextResponse.redirect(new URL('/hoje', req.url))
@@ -33,14 +34,14 @@ export default auth((req) => {
     pathname.startsWith('/planos') ||
     pathname.startsWith('/relatorios')
   ) {
-    if (role !== 'NUTRITIONIST') {
+    if (role !== ROLES.NUTRITIONIST) {
       return NextResponse.redirect(new URL('/hoje', req.url))
     }
   }
 
   // Rotas do paciente — só paciente acessa
   if (pathname.startsWith('/hoje') || pathname.startsWith('/progresso')) {
-    if (role !== 'PATIENT') {
+    if (role !== ROLES.PATIENT) {
       return NextResponse.redirect(new URL('/dashboard', req.url))
     }
   }

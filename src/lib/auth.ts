@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { prisma } from './prisma'
+import { ROLES } from './roles'
 
 declare module 'next-auth' {
   interface Session {
@@ -48,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role,
+          role: user.role as (typeof ROLES)[keyof typeof ROLES],
         }
       },
     }),
