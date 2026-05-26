@@ -1,5 +1,7 @@
 import { Button } from '@base-ui/react'
 import { Eye, EyeOff } from 'lucide-react'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 type LoginFormProps = {
@@ -10,11 +12,33 @@ export const LoginForm = ({ role }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // TODO: conectar com NextAuth
-    console.log({ email, role })
+    setLoading(true)
+    setError('')
+
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    })
+
+    setLoading(false)
+
+    if (result?.error) {
+      setError('Email ou senha inválidos')
+      return
+    }
+
+    if (role === 'nutritionist') {
+      router.push('/dashboard')
+    } else {
+      router.push('/hoje')
+    }
   }
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -61,12 +85,16 @@ export const LoginForm = ({ role }: LoginFormProps) => {
         </div>
       </div>
 
+      {error && (
+        <p className="text-sm text-red-500 text-destructive">{error}</p>
+      )}
+
       {/* Botão entrar */}
       <Button
         type="submit"
         className="w-full bg-primary text-primary-foreground font-medium py-3 rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
       >
-        Entrar
+        {loading ? 'Entrando...' : 'Entrar'}
       </Button>
 
       {/* Divisor */}
