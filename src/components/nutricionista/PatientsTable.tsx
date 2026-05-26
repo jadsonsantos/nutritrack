@@ -1,5 +1,7 @@
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { getInitials } from '@/lib/utils'
+import Link from 'next/link'
 
 const STATUS_ESTILO = {
   'em-dia': 'bg-primary/10 text-primary',
@@ -96,13 +98,7 @@ export default async function PatientsTable() {
               currentWeight && previousWeight
                 ? currentWeight - previousWeight
                 : null
-            const initials =
-              patient.user.name
-                ?.split(' ')
-                .map((n) => n[0])
-                .join('')
-                .toUpperCase()
-                .slice(0, 2) ?? '??'
+            const initials = getInitials(patient.user.name)
 
             return (
               <tr
@@ -111,14 +107,17 @@ export default async function PatientsTable() {
               >
                 {/* Avatar + nome */}
                 <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
+                  <Link
+                    href={`/pacientes/${patient.id}`}
+                    className="flex items-center gap-3"
+                  >
                     <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold shrink-0">
                       {initials}
                     </div>
                     <span className="font-medium text-foreground">
                       {patient.user.name}
                     </span>
-                  </div>
+                  </Link>
                 </td>
 
                 {/* Email */}
