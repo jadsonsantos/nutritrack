@@ -13,7 +13,7 @@ export default auth((req) => {
   if (publicRoutes.includes(pathname)) {
     // Se já está logado, redireciona pro lugar certo
     if (isLoggedIn) {
-      if (role === 'nutritionist') {
+      if (role === 'NUTRITIONIST') {
         return NextResponse.redirect(new URL('/dashboard', req.url))
       }
       return NextResponse.redirect(new URL('/hoje', req.url))
@@ -33,14 +33,14 @@ export default auth((req) => {
     pathname.startsWith('/planos') ||
     pathname.startsWith('/relatorios')
   ) {
-    if (role !== 'nutritionist') {
+    if (role !== 'NUTRITIONIST') {
       return NextResponse.redirect(new URL('/hoje', req.url))
     }
   }
 
   // Rotas do paciente — só paciente acessa
   if (pathname.startsWith('/hoje') || pathname.startsWith('/progresso')) {
-    if (role !== 'patient') {
+    if (role !== 'PATIENT') {
       return NextResponse.redirect(new URL('/dashboard', req.url))
     }
   }

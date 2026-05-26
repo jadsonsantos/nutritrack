@@ -1,4 +1,5 @@
 import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/prisma'
 
 const STATUS_ESTILO = {
   'em-dia': 'bg-primary/10 text-primary',
@@ -15,15 +16,25 @@ const STATUS_LABEL = {
 export default async function PatientsTable() {
   const session = await auth()
 
+  if (!session?.user?.id) {
+    return (
+      <div className="bg-card border border-border rounded-xl p-6 text-center">
+        <p className="text-muted-foreground">
+          Faça login para ver seus pacientes.
+        </p>
+      </div>
+    )
+  }
+
   const nutritionist = await prisma?.nutritionistProfile.findUnique({
-    where: { userId: session?.user.id },
+    where: { userId: session.user.id },
     include: {
       patients: {
         include: {
           user: true,
           weightLogs: {
             orderBy: { loggedAt: 'desc' },
-            take: 1,
+            take: 2,
           },
         },
       },
@@ -78,7 +89,6 @@ export default async function PatientsTable() {
             </tr>
           )}
           {patients.map((patient) => {
-            console.log(patient)
             const logs = patient.weightLogs
             const currentWeight = logs[0]?.weight ?? patient.currentWeight
             const previousWeight = logs[1]?.weight ?? null
