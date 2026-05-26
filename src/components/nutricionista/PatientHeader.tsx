@@ -1,3 +1,5 @@
+import { getInitials } from '@/lib/utils'
+
 interface PatientProps {
   patient: {
     user: {
@@ -18,12 +20,7 @@ export default function PatientHeader({
     <div className="bg-card border border-border rounded-xl p-6 flex items-center gap-6">
       {/* Avatar */}
       <div className="w-16 h-16 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xl font-bold shrink-0">
-        {patient.user.name
-          ?.split(' ')
-          .map((n) => n[0])
-          .join('')
-          .toUpperCase()
-          .slice(0, 2) ?? '??'}
+        {getInitials(patient.user.name)}
       </div>
 
       {/* Nome + info */}
@@ -58,21 +55,18 @@ export default function PatientHeader({
             {patient.goalWeight} kg
           </p>
           {/* Barra de progresso */}
-          {patient.currentWeight != null && patient.goalWeight != null && (
+          {patient.currentWeight != null && patient.goalWeight != null && patient.goalWeight > 0 && (
             <>
-              <div className="w-32 h-1.5 bg-muted rounded-full mt-2">
+              <div className="w-32 h-1.5 bg-muted rounded-full mt-2 overflow-hidden">
                 <div
                   className="h-full bg-primary rounded-full"
                   style={{
-                    width: `${(patient.currentWeight / patient.goalWeight) * 100}%`,
+                    width: `${Math.min((patient.currentWeight / patient.goalWeight) * 100, 100)}%`,
                   }}
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {((patient.currentWeight / patient.goalWeight) * 100).toFixed(
-                  0
-                )}
-                % da meta
+                {Math.min((patient.currentWeight / patient.goalWeight) * 100, 100).toFixed(0)}% da meta
               </p>
             </>
           )}
