@@ -36,9 +36,12 @@ export default function MealCard({ meals }: Props) {
             <div className="flex-1 bg-card border border-border rounded-xl p-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-xs text-muted-foreground">
-                    {meal.mealTime}
-                  </p>
+                  {meal.mealTime && (
+                    <p className="text-xs text-muted-foreground">
+                      {meal.mealTime}
+                    </p>
+                  )}
+
                   <p className="font-semibold text-foreground mt-0.5">
                     {meal.name}
                   </p>
