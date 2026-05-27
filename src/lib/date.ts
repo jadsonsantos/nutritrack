@@ -12,7 +12,10 @@
  *      corresponds to local midnight.
  *   3. Add 24 h to get the start of tomorrow.
  */
-export function getDayRange(timezone?: string): { today: Date; tomorrow: Date } {
+export function getDayRange(timezone?: string): {
+  today: Date
+  tomorrow: Date
+} {
   const FALLBACK = 'America/Sao_Paulo'
 
   let tz = timezone ?? FALLBACK
@@ -33,11 +36,14 @@ export function getDayRange(timezone?: string): { today: Date; tomorrow: Date } 
   }).formatToParts(now)
 
   const get = (type: string) =>
-    parseInt(parts.find((p) => p.type === type)?.value ?? '0')
+    parseInt(parts.find((p) => p.type === type)?.value ?? '0', 10)
 
   // `hour12: false` can return '24' for midnight — normalise with % 24
   const elapsedMs =
-    (get('hour') % 24) * 3_600_000 + get('minute') * 60_000 + get('second') * 1_000
+    (get('hour') % 24) * 3_600_000 +
+    get('minute') * 60_000 +
+    get('second') * 1_000 +
+    now.getMilliseconds()
 
   const today = new Date(now.getTime() - elapsedMs)
   const tomorrow = new Date(today.getTime() + 86_400_000)
