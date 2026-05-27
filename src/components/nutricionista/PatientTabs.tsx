@@ -1,12 +1,17 @@
 'use client'
 
 import MealCard from '@/components/nutricionista/MealCard'
+import { MealWithLogs } from '@/types'
 import { getDate } from '@/utils'
 import { useState } from 'react'
 
 const TABS = ['Diário alimentar', 'Evolução', 'Plano ativo']
 
-export function PatientTabs() {
+type Props = {
+  meals: MealWithLogs[]
+}
+
+export function PatientTabs({ meals }: Props) {
   const [activeTab, setActiveTab] = useState('Diário alimentar')
 
   return (
@@ -33,7 +38,7 @@ export function PatientTabs() {
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
             {getDate()}
           </p>
-          <MealCard />
+          <MealCard meals={meals} />
         </div>
       )}
 

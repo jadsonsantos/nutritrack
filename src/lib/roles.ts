@@ -1,6 +1,6 @@
 export const ROLES = {
-  NUTRITIONIST: 'nutritionist',
-  PATIENT: 'patient',
+  NUTRITIONIST: 'NUTRITIONIST',
+  PATIENT: 'PATIENT',
 } as const
 
 export type Role = (typeof ROLES)[keyof typeof ROLES]
