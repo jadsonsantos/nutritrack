@@ -44,7 +44,7 @@ export default function PatientHeader({
             Peso atual
           </p>
           <p className="text-2xl font-bold text-foreground">
-            {patient.currentWeight} kg
+            {patient.currentWeight ?? '—'} kg
           </p>
         </div>
         <div>
@@ -52,10 +52,10 @@ export default function PatientHeader({
             Meta
           </p>
           <p className="text-2xl font-bold text-primary">
-            {patient.goalWeight} kg
+            {patient.goalWeight ?? '—'} kg
           </p>
           {/* Barra de progresso */}
-          {patient.currentWeight != null && patient.goalWeight != null && patient.goalWeight > 0 && (
+          {patient.currentWeight && patient.goalWeight && (
             <>
               <div className="w-32 h-1.5 bg-muted rounded-full mt-2 overflow-hidden">
                 <div
@@ -66,7 +66,18 @@ export default function PatientHeader({
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-1">
-                {Math.min((patient.currentWeight / patient.goalWeight) * 100, 100).toFixed(0)}% da meta
+                {Math.min(
+                  (patient.currentWeight / patient.goalWeight) * 100,
+                  100
+                ).toFixed(0)}
+                % da meta
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Faltam{' '}
+                {Math.abs(patient.currentWeight - patient.goalWeight).toFixed(
+                  1
+                )}
+                kg para a meta
               </p>
             </>
           )}

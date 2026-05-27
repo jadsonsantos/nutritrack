@@ -12,6 +12,11 @@ export default async function PatientProfilePage({
 }) {
   const { id } = await params
 
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const tomorrow = new Date(today)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
   const patient = await prisma.patientProfile.findUnique({
     where: { id },
     include: {
@@ -20,10 +25,30 @@ export default async function PatientProfilePage({
         orderBy: { loggedAt: 'desc' },
         take: 1,
       },
+      mealPlans: {
+        where: { isActive: true },
+        take: 1,
+        include: {
+          meals: {
+            orderBy: { order: 'asc' },
+            include: {
+              foodLogs: {
+                where: {
+                  logDate: { gte: today, lt: tomorrow },
+                },
+                include: { tacoFood: true },
+              },
+            },
+          },
+        },
+      },
     },
   })
 
   if (!patient) notFound()
+
+  const activeMealPlan = patient.mealPlans[0]
+  const meals = activeMealPlan?.meals ?? []
 
   return (
     <div className="p-8 space-y-6">
@@ -35,7 +60,7 @@ export default async function PatientProfilePage({
         Voltar
       </Link>
       <PatientHeader patient={patient} />
-      <PatientTabs />
+      <PatientTabs meals={meals} />
     </div>
   )
 }
