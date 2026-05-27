@@ -1,7 +1,9 @@
 import PatientHeader from '@/components/nutricionista/PatientHeader'
 import { PatientTabs } from '@/components/nutricionista/PatientTabs'
+import { getDayRange, TIMEZONE_COOKIE } from '@/lib/date'
 import { prisma } from '@/lib/prisma'
 import { ArrowLeft } from 'lucide-react'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -12,10 +14,9 @@ export default async function PatientProfilePage({
 }) {
   const { id } = await params
 
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
+  const cookieStore = await cookies()
+  const timezone = cookieStore.get(TIMEZONE_COOKIE)?.value
+  const { today, tomorrow } = getDayRange(timezone)
 
   const patient = await prisma.patientProfile.findUnique({
     where: { id },
